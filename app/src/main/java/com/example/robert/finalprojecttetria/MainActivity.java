@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
         continueBtn = findViewById(R.id.continueBtn);
         myIntent = new Intent(this, GameBoard.class);
 
-        title.setPaintFlags(title.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        //title.setPaintFlags(title.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         newGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
