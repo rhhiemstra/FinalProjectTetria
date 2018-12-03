@@ -20,7 +20,7 @@ public class Shapes {
 
     public int[][] getShape(int width){
         Random rand = new Random();
-        int randNum = rand.nextInt(7);
+        int randNum = rand.nextInt(5);
         int[][] randShape = null;
 
         switch (randNum){
@@ -31,30 +31,22 @@ public class Shapes {
                 randShape = theLShape(width);
                 break;
             case 2:
-                randShape = square(width);
+                randShape = theLineShape(width);
                 break;
             case 3:
-                randShape = square(width);
+                randShape = theSnakeShape(width);
                 break;
             case 4:
-                randShape = square(width);
+                randShape = theTeeShape(width);
                 break;
-            case 5:
-                randShape = square(width);
-                break;
-            case 6:
-                randShape = square(width);
-                break;
+
         }
         return randShape;
 
     }
 
     public int[][] square(int width){
-//        canvas.drawBitmap(bitShape1, canvas.getWidth()/2+x, 0+y, paint);
-//        canvas.drawBitmap(bitShape2,(canvas.getWidth()/2)+x,100+y, paint);
-//        canvas.drawBitmap(bitShape3,(canvas.getWidth()/2)+50+x,0+y, paint);
-//        canvas.drawBitmap(bitShape4,(canvas.getWidth()/2)+x,50+y, paint);
+
         int[] bitShape1X = {width/2};
         int[] bitSHape1Y = {0};
         int[] bitShpae2X = {width/2+50};
@@ -71,10 +63,7 @@ public class Shapes {
 
     }
     public int[][] theLShape(int width){
-//        canvas.drawBitmap(bitShape1, canvas.getWidth()/2+x, 0+y, paint);
-//        canvas.drawBitmap(bitShape2,(canvas.getWidth()/2)+x,100+y, paint);
-//        canvas.drawBitmap(bitShape3,(canvas.getWidth()/2)+50+x,0+y, paint);
-//        canvas.drawBitmap(bitShape4,(canvas.getWidth()/2)+x,50+y, paint);
+
         int[] bitShape1X = {width/2};
         int[] bitSHape1Y = {0};
         int[] bitShpae2X = {width/2};
@@ -83,6 +72,57 @@ public class Shapes {
         int[] bitSHape3Y = {0};
         int[] bitSHape4X = {width/2};
         int[] bitSHape4Y = {100};
+        int[][] cord = {bitShape1X, bitSHape1Y, bitShpae2X, bitSHape2Y, bitSHape3X, bitSHape3Y, bitSHape4X, bitSHape4Y};
+        return cord;
+
+
+
+
+    }
+    public int[][] theLineShape(int width){
+
+        int[] bitShape1X = {width/2};
+        int[] bitSHape1Y = {0};
+        int[] bitShpae2X = {width/2-50};
+        int[] bitSHape2Y = {0};
+        int[] bitSHape3X = {width/2 + 50};
+        int[] bitSHape3Y = {0};
+        int[] bitSHape4X = {width/2-100};
+        int[] bitSHape4Y = {0};
+        int[][] cord = {bitShape1X, bitSHape1Y, bitShpae2X, bitSHape2Y, bitSHape3X, bitSHape3Y, bitSHape4X, bitSHape4Y};
+        return cord;
+
+
+
+
+    }
+    public int[][] theSnakeShape(int width){
+
+        int[] bitShape1X = {width/2};
+        int[] bitSHape1Y = {0};
+        int[] bitShpae2X = {width/2};
+        int[] bitSHape2Y = {50};
+        int[] bitSHape3X = {width/2 + 50};
+        int[] bitSHape3Y = {50};
+        int[] bitSHape4X = {width/2+50};
+        int[] bitSHape4Y = {100};
+        int[][] cord = {bitShape1X, bitSHape1Y, bitShpae2X, bitSHape2Y, bitSHape3X, bitSHape3Y, bitSHape4X, bitSHape4Y};
+        return cord;
+
+
+
+
+    }
+    public int[][] theTeeShape(int width){
+
+        int[] bitShape1X = {width/2};
+        int[] bitSHape1Y = {0};
+        int[] bitShpae2X = {width/2-50};
+        int[] bitSHape2Y = {0};
+        int[] bitSHape3X = {width/2 + 50};
+        int[] bitSHape3Y = {0};
+        int[] bitSHape4X = {width/2};
+        int[] bitSHape4Y = {50};
         int[][] cord = {bitShape1X, bitSHape1Y, bitShpae2X, bitSHape2Y, bitSHape3X, bitSHape3Y, bitSHape4X, bitSHape4Y};
         return cord;
 

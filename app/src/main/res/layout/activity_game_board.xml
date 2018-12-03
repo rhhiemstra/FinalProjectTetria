@@ -72,7 +72,8 @@
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/gold"
-                android:textSize="15dp" />
+                android:textSize="15dp"
+                android:id="@+id/scoreView"/>
 
             <TextView
                 android:layout_width="90dp"
@@ -106,5 +107,16 @@
 
 
     </RelativeLayout>
+    <View
+        android:layout_width="125dp"
+        android:layout_height="500dp"
+        android:id="@+id/touchViewLeft"
+        />
+    <View
+        android:layout_width="125dp"
+        android:layout_height="500dp"
+        android:layout_toRightOf="@id/touchViewLeft"
+
+        android:id="@+id/touchViewRight"/>
 
 </RelativeLayout>
