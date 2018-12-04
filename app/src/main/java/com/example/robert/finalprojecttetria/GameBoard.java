@@ -177,7 +177,7 @@ public class GameBoard extends AppCompatActivity {
                         //y = prevY - 50;
                         for (int l = 0; l <= 3; l++) {
                             tempWellArrayX.add(bitShapeLeftArr[l]);
-                            if (tempWellArrayY.get(i)== bitShapToptArr[l] && tempWellArrayX.get(i)==bitShapeLeftArr[i]) {
+                            if (tempWellArrayY.contains(bitShapToptArr[l])) {
                                 tempWellArrayY.add(bitShapToptArr[l] - 50);
                             }else
                                 {tempWellArrayY.add(bitShapToptArr[l]);
