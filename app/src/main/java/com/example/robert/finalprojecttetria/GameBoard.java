@@ -1,30 +1,19 @@
 package com.example.robert.finalprojecttetria;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.DragEvent;
-import android.view.GestureDetector;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.zip.Inflater;
-
-import static java.lang.Math.floor;
+import java.util.Arrays;
 
 public class GameBoard extends AppCompatActivity {
     ImageView board;
@@ -54,9 +43,11 @@ public class GameBoard extends AppCompatActivity {
     int bitShapLeft2 = 0;
     int bitShapLeft3 = 0;
     int bitShapLeft4 = 0;
-    int bitShpaeTop1,bitShpaeTop2, bitShpaeTop3, bitShpaeTop4 = 0;
-    ArrayList<Integer> wellArrayX = new ArrayList<>();
-    ArrayList<Integer> wellArrayY = new ArrayList<>();
+    int bitShpaeTop1, bitShpaeTop2, bitShpaeTop3, bitShpaeTop4 = 0;
+    ArrayList<Integer> tempWellArrayX = new ArrayList<>();
+    ArrayList<Integer> tempWellArrayY = new ArrayList<>();
+    ArrayList<Integer> finalWellArrayX = new ArrayList<>();
+    ArrayList<Integer> finalWellArrayY = new ArrayList<>();
 
 
     CountDownTimer timer;
@@ -66,7 +57,6 @@ public class GameBoard extends AppCompatActivity {
     Bitmap bitShape3 = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
     Bitmap bitShape4 = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
     Bitmap tempBitShape = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
-
 
 
     @Override
@@ -154,46 +144,81 @@ public class GameBoard extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
 
+                if(!tempWellArrayX.isEmpty()){
+                    for (int i = 0; i < bitShapToptArr.length;i++) {
+                        score.setText(String.valueOf(bitShapToptArr[i]) + " " + String.valueOf(tempWellArrayY.get(i))
+                                + " \n" + bitShapeLeftArr[i] + " " + tempWellArrayX.get(i));
+                    }
+                }
 
-                score.setText(String.valueOf(board.getLeft()));
+
+
 
                 board.setImageBitmap(bitmap);
 
                 canvas = new Canvas(bitmap);
+                //score.setText(String.valueOf(tempWellArrayX.get(0)) +" " + String.valueOf(tempWellArrayX.get(0)) );
 
 
                 canvas.drawColor(Color.parseColor("#a9a9a9"));
-                int index = wellArrayX.size();
+                int index = tempWellArrayX.size();
+
+
 
                 int prevY = y;
                 y += 50;
 
-                for (int i = 0; i <= bitShapToptArr.length - 1; i++) {
+                for (int i = 0; i <= 3; i++) {
 
 
-                    if (bitShapToptArr[i] >= canvas.getHeight()-50) {
-                        bitShapToptArr[i] = canvas.getHeight()-50;
-                        y = prevY -50;
+                    if (!tempWellArrayX.isEmpty() && (tempWellArrayX.contains(bitShapeLeftArr[i]) && tempWellArrayY.contains(bitShapToptArr[i]))) {
+
+                        //bitShapToptArr[i] = prevY;
+                        //y = prevY - 50;
                         for (int l = 0; l <= 3; l++) {
-                            wellArrayX.add(bitShapeLeftArr[l]);
-                            wellArrayY.add(bitShapToptArr[l]);
+                            tempWellArrayX.add(bitShapeLeftArr[l]);
+                            if (tempWellArrayY.get(i)== bitShapToptArr[l] && tempWellArrayX.get(i)==bitShapeLeftArr[i]) {
+                                tempWellArrayY.add(bitShapToptArr[l] - 50);
+                            }else
+                                {tempWellArrayY.add(bitShapToptArr[l]);
+                            }
                             tempBitShape.eraseColor(Color.GREEN);
                             bitmapArray.add(tempBitShape);
+
                         }
                         cords = shape.getShape(board.getWidth());
 
-                        y=0;
+
+                        y = 0;
+
                     }
+
+
+                    else if(bitShapToptArr[i] >= canvas.getHeight() - 50) {
+                        bitShapToptArr[i] = canvas.getHeight() - 50;
+                        y = prevY - 50;
+                        for (int l = 0; l <= 3; l++) {
+                            tempWellArrayX.add(bitShapeLeftArr[l]);
+                            tempWellArrayY.add(bitShapToptArr[l]);
+                            tempBitShape.eraseColor(Color.GREEN);
+                            bitmapArray.add(tempBitShape);
+
+                        }
+
+                        cords = shape.getShape(board.getWidth());
+
+                        y = 0;
+                    }
+
                 }
-                if (!wellArrayX.isEmpty()) {
-                    for(int j = 0; j <= index-1; j++) {
+                if (!tempWellArrayX.isEmpty()) {
+                    for (int j = 0; j <= index - 1; j++) {
                         bitmapArray.get(j).eraseColor(Color.GREEN);
-                        canvas.drawBitmap(bitmapArray.get(j), wellArrayX.get(j), wellArrayY.get(j), paint);
+                        canvas.drawBitmap(bitmapArray.get(j), tempWellArrayX.get(j), tempWellArrayY.get(j), paint);
                     }
 
 
                 }
-
 
 
                 bitShape1.eraseColor(Color.RED);
@@ -210,7 +235,6 @@ public class GameBoard extends AppCompatActivity {
                 bitShpaeTop2 = cords[3][0] + y;
                 bitShpaeTop3 = cords[5][0] + y;
                 bitShpaeTop4 = cords[7][0] + y;
-
 
 
                 for (int i = 0; i <= 3; i++) {
