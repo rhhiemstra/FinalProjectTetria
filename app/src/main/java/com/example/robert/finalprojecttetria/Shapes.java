@@ -2,6 +2,7 @@ package com.example.robert.finalprojecttetria;
 
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.constraint.solver.widgets.Rectangle;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ public class Shapes {
 
 
 
+    int color;
 
     Shapes(int width){
 
@@ -26,18 +28,23 @@ public class Shapes {
         switch (randNum){
             case 0:
                 randShape = square(width);
+                color = Color.RED;
                 break;
             case 1:
                 randShape = theLShape(width);
+                color = Color.BLUE;
                 break;
             case 2:
                 randShape = theLineShape(width);
+                color = Color.GREEN;
                 break;
             case 3:
                 randShape = theSnakeShape(width);
+                color = Color.YELLOW;
                 break;
             case 4:
                 randShape = theTeeShape(width);
+                color = Color.MAGENTA;
                 break;
 
         }
@@ -129,6 +136,9 @@ public class Shapes {
 
 
 
+    }
+    public int getColor(){
+        return color;
     }
 
 

@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GameBoard extends AppCompatActivity {
     ImageView board;
@@ -27,12 +26,14 @@ public class GameBoard extends AppCompatActivity {
     View touchViewRight;
     ArrayList<Bitmap> bitmapArray;
     TextView score;
-    int[] bitShapeLeftArr = new int[4];
-    int[] bitShapToptArr = new int[4];
+    int[] bitShapeXCordsArr = new int[4];
+    int[] bitShapeYCordsArr = new int[4];
+    int[][] bitShapeXandYCordsArr = new int[4][2];
 
 
     int backgroundColor;
     int squareColor;
+    boolean flag = true;
 
     int x = 50;
     int y = 50;
@@ -80,9 +81,9 @@ public class GameBoard extends AppCompatActivity {
                 x -= 50;
 
 
-                for (int i = 0; i <= bitShapeLeftArr.length - 1; i++) {
-                    if (bitShapeLeftArr[i] <= 35) {
-                        bitShapeLeftArr[i] = 35;
+                for (int i = 0; i <= bitShapeXCordsArr.length - 1; i++) {
+                    if (bitShapeXCordsArr[i] <= 35) {
+                        bitShapeXCordsArr[i] = 35;
                         x = prevX;
                     }
                 }
@@ -98,9 +99,9 @@ public class GameBoard extends AppCompatActivity {
                 prevX = x;
                 x += 50;
 
-                for (int i = 0; i <= bitShapeLeftArr.length - 1; i++) {
-                    if (bitShapeLeftArr[i] >= 800) {
-                        bitShapeLeftArr[i] = 800;
+                for (int i = 0; i <= bitShapeXCordsArr.length - 1; i++) {
+                    if (bitShapeXCordsArr[i] >= 800) {
+                        bitShapeXCordsArr[i] = 800;
                         x = prevX;
                     }
                 }
@@ -145,9 +146,9 @@ public class GameBoard extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
 
                 if(!tempWellArrayX.isEmpty()){
-                    for (int i = 0; i < bitShapToptArr.length;i++) {
-                        score.setText(String.valueOf(bitShapToptArr[i]) + " " + String.valueOf(tempWellArrayY.get(i))
-                                + " \n" + bitShapeLeftArr[i] + " " + tempWellArrayX.get(i));
+                    for (int i = 0; i < bitShapeYCordsArr.length; i++) {
+                        score.setText(String.valueOf(bitShapeYCordsArr[i]) + " " + String.valueOf(tempWellArrayY.get(i))
+                                + " \n" + bitShapeXCordsArr[i] + " " + tempWellArrayX.get(i));
                     }
                 }
 
@@ -168,52 +169,51 @@ public class GameBoard extends AppCompatActivity {
                 int prevY = y;
                 y += 50;
 
+                flag = true;
                 for (int i = 0; i <= 3; i++) {
+                    for (int a=0; a<tempWellArrayX.size();a++) {
 
 
-                    if (!tempWellArrayX.isEmpty() && (tempWellArrayX.contains(bitShapeLeftArr[i]) && tempWellArrayY.contains(bitShapToptArr[i]))) {
+                        if (!tempWellArrayX.isEmpty() && flag && (bitShapeXandYCordsArr[i][0] == tempWellArrayX.get(a)) && bitShapeXandYCordsArr[i][1] + 50 == tempWellArrayY.get(a)) {
 
-                        //bitShapToptArr[i] = prevY;
-                        //y = prevY - 50;
-                        for (int l = 0; l <= 3; l++) {
-                            tempWellArrayX.add(bitShapeLeftArr[l]);
-                            if (tempWellArrayY.contains(bitShapToptArr[l])) {
-                                tempWellArrayY.add(bitShapToptArr[l] - 50);
-                            }else
-                                {tempWellArrayY.add(bitShapToptArr[l]);
+                            //bitShapeYCordsArr[i] = prevY;
+                            //y = prevY - 50;
+                            for (int l = 0; l <= 3; l++) {
+                                tempWellArrayX.add(bitShapeXCordsArr[l]);
+                                tempWellArrayY.add(bitShapeYCordsArr[l]);
+                                tempBitShape.eraseColor(shape.getColor());
+                                bitmapArray.add(tempBitShape);
+
                             }
-                            tempBitShape.eraseColor(Color.GREEN);
-                            bitmapArray.add(tempBitShape);
+                            cords = shape.getShape(board.getWidth());
+
+                            y = 0;
+                            flag = false;
+                        }
+
+
 
                         }
-                        cords = shape.getShape(board.getWidth());
-
-
-                        y = 0;
-
-                    }
-
-
-                    else if(bitShapToptArr[i] >= canvas.getHeight() - 50) {
-                        bitShapToptArr[i] = canvas.getHeight() - 50;
+                    if (bitShapeYCordsArr[i] >= canvas.getHeight() - 50) {
+                        bitShapeYCordsArr[i] = canvas.getHeight() - 50;
                         y = prevY - 50;
                         for (int l = 0; l <= 3; l++) {
-                            tempWellArrayX.add(bitShapeLeftArr[l]);
-                            tempWellArrayY.add(bitShapToptArr[l]);
-                            tempBitShape.eraseColor(Color.GREEN);
+                            tempWellArrayX.add(bitShapeXCordsArr[l]);
+                            tempWellArrayY.add(bitShapeYCordsArr[l]);
+                            tempBitShape.eraseColor(shape.getColor());
                             bitmapArray.add(tempBitShape);
 
                         }
-
                         cords = shape.getShape(board.getWidth());
 
                         y = 0;
                     }
+
 
                 }
                 if (!tempWellArrayX.isEmpty()) {
                     for (int j = 0; j <= index - 1; j++) {
-                        bitmapArray.get(j).eraseColor(Color.GREEN);
+                        bitmapArray.get(j).eraseColor(shape.getColor());
                         canvas.drawBitmap(bitmapArray.get(j), tempWellArrayX.get(j), tempWellArrayY.get(j), paint);
                     }
 
@@ -238,10 +238,15 @@ public class GameBoard extends AppCompatActivity {
 
 
                 for (int i = 0; i <= 3; i++) {
-                    bitShapeLeftArr[i] = cords[i + i][0] + x;
+                    bitShapeXCordsArr[i] = cords[i + i][0] + x;
                 }
                 for (int i = 0; i <= 3; i++) {
-                    bitShapToptArr[i] = cords[i + i + 1][0] + y;
+                    bitShapeYCordsArr[i] = cords[i + i + 1][0] + y;
+                }for (int i = 0; i <= 3; i++) {
+
+                    bitShapeXandYCordsArr[i][0] = cords[i + i][0] + x;
+                    bitShapeXandYCordsArr[i][1] = cords[i + i + 1][0] + y;
+
                 }
 
 
