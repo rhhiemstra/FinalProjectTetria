@@ -1,56 +1,66 @@
 package com.example.robert.finalprojecttetria;
 
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.constraint.solver.widgets.Rectangle;
-import android.widget.ImageView;
 
-import java.util.ArrayList;
+import android.graphics.Color;
 import java.util.Random;
 
 public class Shapes {
 
 
 
-    int color;
-
-    Shapes(int width){
-
-    }
+    int currentColor;
+    int nextColor;
+    int prevRandomNumber;
+    String currentShape = "";
+    String nextShape = "";
+    Random rand = new Random();
+    int[][] currentShapeArr = null;
+    int[][] nextShapeArr = null;
 
     public int[][] getShape(int width){
-        Random rand = new Random();
-        int randNum = rand.nextInt(5);
-        int[][] randShape = null;
+
+
+//        int randNum =generateRandom(prevRandomNumber);
+//        prevRandomNumber = randNum;
+             int randNum = 2;
 
         switch (randNum){
             case 0:
-                randShape = square(width);
-                color = Color.RED;
+                currentShapeArr = square(width);
+                currentColor = Color.RED;
+                currentShape = "square";
                 break;
             case 1:
-                randShape = theLShape(width);
-                color = Color.BLUE;
+                currentShapeArr = theLShape(width);
+                currentColor = Color.BLUE;
+                currentShape = "lShape";
                 break;
             case 2:
-                randShape = theLineShape(width);
-                color = Color.GREEN;
+                currentShapeArr = theLineShape(width);
+                currentColor = Color.GREEN;
+                currentShape = "lineShape";
                 break;
             case 3:
-                randShape = theSnakeShape(width);
-                color = Color.YELLOW;
+                currentShapeArr = theSnakeShape(width);
+                currentColor = Color.YELLOW;
+                currentShape = "snakeShape";
                 break;
             case 4:
-                randShape = theTeeShape(width);
-                color = Color.MAGENTA;
+                currentShapeArr = theTeeShape(width);
+                currentColor = Color.MAGENTA;
+                currentShape = "teeShape";
                 break;
 
         }
-        return randShape;
+        return currentShapeArr;
 
     }
+
+    public String getShape(){
+        return currentShape;
+    }
+
 
     public int[][] square(int width){
 
@@ -138,86 +148,19 @@ public class Shapes {
 
     }
     public int getColor(){
-        return color;
+        return currentColor;
     }
 
+    int generateRandom(int lastRandomNumber) {
 
+        // add-and-wrap another random number to produce a guaranteed
+        // different result.
+        // note the one-less-than UPPER_BOUND input
+        int rotate = 1 + rand.nextInt(5 - 1);
+        // 'rotate' the last number
+        return (lastRandomNumber + rotate) % 5;
 
-//    Shapes tee(int x, int y){
-//
-//        fill(255, 0, 255);
-//        stroke(0);
-//
-//        rect(0+x, 0+y, 10, 10);
-//        rect(-10+x, 0+y, 10, 10);
-//        rect(10+x, 0+y, 10, 10);
-//        rect(0+x, 10+y, 10, 10);
-//        return this;
-//    }
-//
-//
-//    Shapes straight(int x, int y){
-//
-//        fill(0, 0, 255);
-//        stroke(0);
-//
-//        rect(0+x, 0+y, 10, 10);
-//        rect(0+x, -10+y, 10, 10);
-//        rect(0+x, -20+y, 10, 10);
-//        rect(0+x, 10+y, 10, 10);
-//        return this;
-//    }
-//
-//    Shapes lz(int x, int y){
-//
-//        fill(144, 144, 0);
-//        stroke(0);
-//
-//        rect(0+x, 10+y, 10, 10);
-//        rect(-10+x, 10+y, 10, 10);
-//        rect(0+x, 0+y, 10, 10);
-//        rect(10+x, 0+y, 10, 10);
-//        return this;
-//    }
-//
-//    Shapes rz(int x, int y){
-//
-//        fill(0, 144, 144);
-//        stroke(0);
-//
-//        rect(0+x, 10+y, 10, 10);
-//        rect(10+x, 10+y, 10, 10);
-//        rect(0+x, 0+y, 10, 10);
-//        rect(-10+x, 0+y, 10, 10);
-//        return this;
-//    }
-//
-//    Shapes ll(int x, int y){
-//        fill(255);
-//        stroke(0);
-//
-//        rect(0+x, 0+y, 10, 10);
-//        rect(0+x, -10+y, 10, 10);
-//        rect(0+x, -20+y, 10, 10);
-//        rect(-10+x, 0+y, 10, 10);
-//        return this;
-//    }
-//
-//    Shapes rl(int x, int y){
-//        fill(255);
-//        stroke(0);
-//
-//        rect(0+x, 0+y, 10, 10);
-//        rect(0+x, -10+y, 10, 10);
-//        rect(0+x, -20+y, 10, 10);
-//        rect(10+x, 0+y, 10, 10);
-//        return this;
-//    }
-
-
-
-
-
+    }
 
 }
 
