@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameBoard extends AppCompatActivity {
     ImageView board, nextPiece;
@@ -28,17 +30,17 @@ public class GameBoard extends AppCompatActivity {
     TextView score;
 
     int backgroundColor, position, squareColor, boardWidth, prevY;
-    int[] bitShapeXCordsArr= new int[4], bitShapeYCordsArr = new int[4];
+    int[] bitShapeXCordsArr = new int[4], bitShapeYCordsArr = new int[4];
     int[][] bitShapeXandYCordsArr = new int[4][2];
     int[][] wellArray;
     int[][] cords, nextCords;
-    int x , y = 50;
+    int x, y = 50;
     int prevX = x;
     int counter = 0;
-    int deleteRow = 0;
+    int[] deleteRow;
     int bitShapeLeft1, bitShapeLeft2, bitShapeLeft3, bitShapeLeft4,
             bitShapeTop1, bitShapeTop2, bitShapeTop3, bitShapeTop4,
-            x1,x2,x3,x4,y1,y2,y3,y4 =0,currColor, nextColor,
+            x1, x2, x3, x4, y1, y2, y3, y4 = 0, currColor, nextColor,
             nextBitShapeLeft1, nextBitShapeLeft2, nextBitShapeLeft3, nextBitShapeLeft4,
             nextBitShapeTop1, nextBitShapeTop2, nextBitShapeTop3, nextBitShapeTop4;
 
@@ -47,15 +49,13 @@ public class GameBoard extends AppCompatActivity {
     boolean flag = true;
     boolean addColor = false;
     boolean newShape = false;
+    boolean eraseLines = false;
 
     Shapes shape;
 
 
-
-
-
-    ArrayList<Integer> tempWellArrayX  = new ArrayList<>(), tempWellArrayY = new ArrayList<>();
-
+    ArrayList<Integer> tempWellArrayX = new ArrayList<>(), tempWellArrayY = new ArrayList<>();
+    ArrayList<Integer> deleteRowIndex = new ArrayList<>();
     Button leftBtn, rightBtn;
 
 
@@ -68,7 +68,7 @@ public class GameBoard extends AppCompatActivity {
     Bitmap tempBitShape = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
     Bitmap nextBitShape1 = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
     Bitmap nextBitShape2 = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
-    Bitmap nextBitShape3  = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
+    Bitmap nextBitShape3 = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
     Bitmap nextBitShape4 = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
 
 
@@ -90,7 +90,7 @@ public class GameBoard extends AppCompatActivity {
         touchViewRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             checkOnRightWall();
+                checkOnRightWall();
             }
         });
 
@@ -98,7 +98,7 @@ public class GameBoard extends AppCompatActivity {
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rotate("right",shape );
+                rotate("right", shape);
             }
         });
         leftBtn.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +150,7 @@ public class GameBoard extends AppCompatActivity {
                 mainDrawMethod();
 
             }
+
             @Override
             public void onFinish() {
                 timer.start();
@@ -158,34 +159,58 @@ public class GameBoard extends AppCompatActivity {
 
     }
 
-    public void checkLine(){
+    public void checkLine() {
 
-        for (int i = 0; i < tempWellArrayY.size(); i++ ){
+        for (int i = 0; i < tempWellArrayY.size(); i++) {
 
-                counter = Collections.frequency(tempWellArrayY, tempWellArrayY.get(i));
-                deleteRow = tempWellArrayY.get(i);
-
-
-                System.out.println(counter);
-
-
-            }
-
-
-
-
-
-
-        if(counter >= 18){
-            System.out.println("DELETE LINE!!!!!!!!!" + " Counter = " + counter);
-            for(int i = 0; i < tempWellArrayX.size(); i++){
-                //if()
-                for(int j = 0; j < wellArray.length; j++){
-                    tempWellArrayX.remove(wellArray[i][1]);
+            counter = Collections.frequency(tempWellArrayY, tempWellArrayY.get(i));
+            int check = tempWellArrayY.get(i);
+            if (counter >= 18) {
+            for (int j = 0; j < tempWellArrayY.size(); j++) {
+                if (tempWellArrayY.get(j).equals(check)) {
+                    int id = j;
+                    deleteRowIndex.add(id);
                 }
             }
+
+            for (int k = deleteRowIndex.size()-1; k >=0; k--) {
+                int remove = deleteRowIndex.get(k);
+                    tempWellArrayY.remove(remove);
+                    tempWellArrayX.remove(remove);
+
+
+
+                }
+                eraseLines = true;
+            }
+
         }
+        deleteRowIndex.clear();
+
+
+        System.out.println(counter);
+
+
+
+
+
+
+
+
+
+
+
+
+        System.out.println("DELETE LINE!!!!!!!!!" + " Counter = " + counter);
+//        for (int i = 0; i < tempWellArrayX.size(); i++) {
+//            //if()
+//            for (int j = 0; j < wellArray.length; j++) {
+//                tempWellArrayX.remove(wellArray[i][1]);
+//            }
+//        }
     }
+
+
 
     public void onCreateInit(){
         board = findViewById(R.id.gameBoard);
@@ -218,6 +243,7 @@ public class GameBoard extends AppCompatActivity {
                 if (!tempWellArrayX.isEmpty() && flag && (collisionOnXCBool(i , a) && collisionOnYCBool(i, a))) {
 
                     checkCollision(i, shape);
+                    checkLine();
 
 
 //                    cords = shape.getShape(board.getWidth());
@@ -225,17 +251,19 @@ public class GameBoard extends AppCompatActivity {
             }
             if (bitShapeYCordsArr[i] >= canvas.getHeight() - 50 && flag) {
                 checkBottom(i, shape);
+                checkLine();
                 //cords = nextCords.clone();
                 //newShape = true;
             }
         }
         if (!tempWellArrayX.isEmpty()) {
-            //checkLine();
+            index = tempWellArrayX.size();
             reDrawWell(index);
 
         }
     }
     public void mainDrawMethod(){
+
         bitShape1.eraseColor(currColor);
         bitShape2.eraseColor(currColor);
         bitShape3.eraseColor(currColor);
@@ -422,9 +450,14 @@ public class GameBoard extends AppCompatActivity {
 
         for (int i = 0; i <= index-1; i++) {
 
+            if(eraseLines){
+                tempWellArrayY.set(i, tempWellArrayY.get(i)+50);
 
+
+            }
             wellArray[i][0] = tempWellArrayX.get(i);
             wellArray[i][1] = tempWellArrayY.get(i);
+
             //bitShapeColorArr.add(shape.getColor());
 
         }
@@ -432,10 +465,12 @@ public class GameBoard extends AppCompatActivity {
 
 
             bitmapArray.get(j).eraseColor(bitShapeColorArr.get(j));
+
             canvas.drawBitmap(bitmapArray.get(j), wellArray[j][0], wellArray[j][1], paint);
 
 
         }
+        eraseLines = false;
 
     }
 

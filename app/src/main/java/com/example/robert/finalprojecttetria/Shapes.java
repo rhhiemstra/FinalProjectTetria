@@ -21,9 +21,8 @@ public class Shapes {
     public int[][] getShape(int width){
 
 
-//        int randNum =generateRandom(prevRandomNumber);
-//        prevRandomNumber = randNum;
-             int randNum = 2;
+        int randNum =generateRandom(prevRandomNumber);
+        prevRandomNumber = randNum;
 
         switch (randNum){
             case 0:
