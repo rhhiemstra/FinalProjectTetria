@@ -1,25 +1,15 @@
 package com.example.robert.finalprojecttetria;
 
-
-
 import android.graphics.Color;
 import java.util.Random;
 
 public class Shapes {
-
-
-
-    int currentColor;
-    int nextColor;
-    int prevRandomNumber;
+    int currentColor, prevRandomNumber;
     String currentShape = "";
-    String nextShape = "";
     Random rand = new Random();
     int[][] currentShapeArr = null;
-    int[][] nextShapeArr = null;
-
+//--------Gets a random shape from the methods below.
     public int[][] getShape(int width){
-
 
         int randNum =generateRandom(prevRandomNumber);
         prevRandomNumber = randNum;
@@ -55,23 +45,23 @@ public class Shapes {
         return currentShapeArr;
 
     }
-
+//---------Used to pass the shape of the class.
     public String getShape(){
         return currentShape;
     }
 
-
+// holds the starting coordinates of the shapes and assigns them to a multidimensional array.
     public int[][] square(int width){
 
         int[] bitShape1X = {width/2};
-        int[] bitSHape1Y = {0};
+        int[] bitShape1Y = {0};
         int[] bitShpae2X = {width/2+50};
         int[] bitSHape2Y = {50};
         int[] bitSHape3X = {width/2 + 50};
         int[] bitSHape3Y = {0};
         int[] bitSHape4X = {width/2};
         int[] bitSHape4Y = {50};
-        int[][] cord = {bitShape1X, bitSHape1Y, bitShpae2X, bitSHape2Y, bitSHape3X, bitSHape3Y, bitSHape4X, bitSHape4Y};
+        int[][] cord = {bitShape1X, bitShape1Y, bitShpae2X, bitSHape2Y, bitSHape3X, bitSHape3Y, bitSHape4X, bitSHape4Y};
         return cord;
 
 
@@ -150,6 +140,7 @@ public class Shapes {
         return currentColor;
     }
 
+//--------Makes sure you don't get the same shape twice in a row.
     int generateRandom(int lastRandomNumber) {
 
         // add-and-wrap another random number to produce a guaranteed
