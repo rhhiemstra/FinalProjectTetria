@@ -26,6 +26,9 @@ public class GameBoard extends AppCompatActivity {
     ArrayList<Bitmap> bitmapArray;
     ArrayList<Integer> bitShapeColorArr;
     TextView score;
+    Button pause;
+    Boolean pauseFlag = false;
+    int scoreInt = 0;
     int[] bitShapeXCordsArr = new int[4], bitShapeYCordsArr = new int[4], deleteRow;
     int[][] bitShapeXandYCordsArr = new int[4][2], wellArray,cords, nextCords;
     int bitShapeLeft1, bitShapeLeft2, bitShapeLeft3, bitShapeLeft4, bitShapeTop1, bitShapeTop2, bitShapeTop3, bitShapeTop4, x1, x2, x3, x4, y1, y2, y3, y4 = 0,
@@ -49,6 +52,10 @@ public class GameBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_board);
+        score = findViewById(R.id.scoreView);
+        pause = findViewById(R.id.pauseBtn);
+
+        score.setText(String.valueOf(scoreInt));
 
         //----------Initializes all the views and variables----------------------------------------
         onCreateInit();
@@ -107,6 +114,8 @@ public class GameBoard extends AppCompatActivity {
 
         backgroundColor = Color.WHITE;
         squareColor = Color.BLACK;
+
+
     }
 //This is the main method that everything else runs inside of.
     public void drawSomething(View view) {
@@ -123,6 +132,20 @@ public class GameBoard extends AppCompatActivity {
         timer = new CountDownTimer(2000, 150) {
             @Override
             public void onTick(long millisUntilFinished) {
+
+                pause.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!pauseFlag){
+                            timer.cancel();
+                            pauseFlag = true;
+                        }else{
+                            timer.start();
+                            pauseFlag = false;
+                        }
+                    }
+                });
+
 
                 //Initializing the Game board and canvas we will be drawing on-------
                 nextPiece.setImageBitmap(bitMapNextPiece);
@@ -309,6 +332,10 @@ public class GameBoard extends AppCompatActivity {
 
                 }
                 eraseLines = true;
+                deleteRowIndex.clear();
+                scoreInt += 50;
+                score.setText(String.valueOf(scoreInt));
+
             }
         }
         deleteRowIndex.clear();
@@ -355,11 +382,13 @@ public class GameBoard extends AppCompatActivity {
     //This method is used to redraw the entire well of fallen pieces.
     public void reDrawWell(int index){
         wellArray = new int[index][2];
+
         //This is used to set the new pieces to the entire well and redraw them.
         for (int i = 0; i <= index-1; i++) {
             //This is how we moves the remaining pieces down after we have cleared a line.
             if(eraseLines){
                 tempWellArrayY.set(i, tempWellArrayY.get(i)+50);
+
             }
             wellArray[i][0] = tempWellArrayX.get(i);
             wellArray[i][1] = tempWellArrayY.get(i);
@@ -368,6 +397,7 @@ public class GameBoard extends AppCompatActivity {
             bitmapArray.get(j).eraseColor(bitShapeColorArr.get(j));
             canvas.drawBitmap(bitmapArray.get(j), wellArray[j][0], wellArray[j][1], paint);
         }
+
         eraseLines = false;
 
     }

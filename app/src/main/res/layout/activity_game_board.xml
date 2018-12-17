@@ -8,6 +8,14 @@
     android:orientation="horizontal"
     tools:context=".GameBoard">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/gameBoard"
         android:layout_width="250dp"
@@ -37,7 +45,9 @@
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="6dp"
-        android:text="||" />
+        android:text="||"
+
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
