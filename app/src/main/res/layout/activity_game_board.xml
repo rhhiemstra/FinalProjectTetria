@@ -8,14 +8,7 @@
     android:orientation="horizontal"
     tools:context=".GameBoard">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
-        >
-
-
-    </RelativeLayout>
 
     <ImageView
         android:id="@+id/gameBoard"
@@ -132,4 +125,37 @@
         android:layout_height="500dp"
         android:layout_toRightOf="@id/touchViewLeft"
         android:id="@+id/touchViewRight"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a9a9a990"
+        android:id="@+id/pauseOverlay"
+
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Continue"
+            android:textAllCaps="false"
+            android:textSize="24sp"
+            android:id="@+id/contBtn"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contBtn"
+            android:layout_centerHorizontal="true"
+            android:textSize="24sp"
+            android:text="Quit Game"
+            android:textAllCaps="false"
+            android:id="@+id/quitBtn"
+            />
+
+
+    </RelativeLayout>
 </RelativeLayout>

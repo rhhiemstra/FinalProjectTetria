@@ -1,5 +1,6 @@
 package com.example.robert.finalprojecttetria;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,6 +29,10 @@ public class GameBoard extends AppCompatActivity {
     ArrayList<Integer> bitShapeColorArr;
     TextView score;
     Button pause;
+    Button contBtn;
+    Button quitBtn;
+    Intent goBack;
+    RelativeLayout overlay;
     Boolean pauseFlag = false;
     int scoreInt = 0;
     int[] bitShapeXCordsArr = new int[4], bitShapeYCordsArr = new int[4], deleteRow;
@@ -54,6 +60,11 @@ public class GameBoard extends AppCompatActivity {
         setContentView(R.layout.activity_game_board);
         score = findViewById(R.id.scoreView);
         pause = findViewById(R.id.pauseBtn);
+        overlay = findViewById(R.id.pauseOverlay);
+        overlay.setVisibility(View.GONE);
+        contBtn = findViewById(R.id.contBtn);
+        quitBtn = findViewById(R.id.quitBtn);
+        goBack = new Intent(this, MainActivity.class);
 
         score.setText(String.valueOf(scoreInt));
 
@@ -139,9 +150,26 @@ public class GameBoard extends AppCompatActivity {
                         if(!pauseFlag){
                             timer.cancel();
                             pauseFlag = true;
+                            overlay.setVisibility(View.VISIBLE);
+                            contBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    timer.start();
+                                    pauseFlag = false;
+                                    overlay.setVisibility(View.GONE);
+                                }
+                            });
+                            quitBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    GameBoard.this.startActivity(goBack);
+                                }
+                            });
+
                         }else{
                             timer.start();
                             pauseFlag = false;
+                            overlay.setVisibility(View.GONE);
                         }
                     }
                 });
